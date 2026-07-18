@@ -1,0 +1,196 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nova — Plantilla de Página de Ventas Universal</title>
+<meta name="description" content="Plantilla de página de ventas 100% editable, generada con IA.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <div class="logo">
+      <span class="logo-marca" id="logo-inicial">N</span>
+      <span id="logo-nome">Nova</span>
+    </div>
+    <nav class="nav-links">
+      <a href="#beneficios">Beneficios</a>
+      <a href="#funciona">Cómo funciona</a>
+      <a href="#precios">Precios</a>
+      <a href="#faq">Preguntas</a>
+    </nav>
+    <div class="header-acciones">
+      <a href="#funciona" class="btn btn-secundario" id="btn-header" data-link-role="secundario">Iniciar sesión</a>
+      <a href="#precios" class="btn btn-primario" id="btn-principal-header" data-link-role="principal">Probar gratis</a>
+      <button class="nav-toggle" aria-label="Abrir menú">☰</button>
+    </div>
+  </div>
+</header>
+
+<main id="app">
+<!-- El contenido de las secciones se genera dinámicamente desde CONFIG.secciones -->
+</main>
+
+<button class="cta-flotante" id="ctaFlotante">
+  <span id="texto-cta-flotante">¿Listo para empezar?</span>
+  <a href="#precios" class="btn btn-primario" id="btn-principal-flutuante" data-link-role="principal" style="padding:9px 18px;font-size:13.5px;">Probar gratis</a>
+</button>
+
+<!-- ============================================================
+     PANEL DE EDICIÓN EN VIVO
+     ============================================================ -->
+<button id="abrir-login-comprador" aria-label="Acceso comprador" title="Acceso comprador">Acceso comprador</button>
+<button id="abrir-editor" aria-label="Abrir editor" title="Personalizar página">⚙</button>
+<button id="sair-comprador" aria-label="Salir comprador" title="Cerrar sesión de comprador">Salir</button>
+
+<div id="modal-login-comprador" class="modal-login" aria-hidden="true">
+  <div class="modal-card">
+    <h4>Acceso de comprador</h4>
+    <p>Inicia sesión con tu email de compra y código de acceso para editar esta página.</p>
+    <div class="campo"><label>Email de compra</label><input type="email" id="login-email-comprador" placeholder="tu@email.com"></div>
+    <div class="campo"><label>Código de acceso</label><input type="password" id="login-codigo-comprador" placeholder="••••••••"></div>
+    <div class="modal-acciones">
+      <button class="btn-panel" type="button" id="cerrar-login-comprador">Cerrar</button>
+      <button class="btn-panel primario" type="button" id="enviar-login-comprador">Entrar</button>
+    </div>
+    <p class="login-estado" id="login-estado"></p>
+  </div>
+</div>
+
+<aside id="panel-editor">
+  <div class="panel-header">
+    <h3>Editor de página</h3>
+    <button class="cerrar-panel" id="cerrarPanel">✕</button>
+  </div>
+  <div class="panel-tabs">
+    <button class="panel-tab activa" data-tab="producto">Producto</button>
+    <button class="panel-tab" data-tab="diseno">Diseño</button>
+    <button class="panel-tab" data-tab="secciones">Secciones</button>
+    <button class="panel-tab" data-tab="mensajes">Mensajes</button>
+    <button class="panel-tab" data-tab="exportar">Exportar</button>
+  </div>
+  <div class="panel-body">
+
+    <div class="panel-acoes">
+      <button class="btn-panel primario" id="salvar-configuracao" type="button">Guardar cambios</button>
+      <p class="estado-salvamento" id="estado-salvamento">Aún no guardado en este dispositivo.</p>
+    </div>
+
+    <div class="panel-seccion activa" data-seccion="producto">
+      <div class="campo"><label>Nombre del producto</label><input type="text" id="cfg-nombre"></div>
+      <div class="campo"><label>Subtítulo (frase corta del héroe)</label><textarea id="cfg-subtitulo"></textarea></div>
+      <div class="campo"><label>Descripción</label><textarea id="cfg-descripcion"></textarea></div>
+      <div class="fila-2">
+        <div class="campo"><label>Nicho</label><input type="text" id="cfg-nicho"></div>
+        <div class="campo"><label>Moneda</label><input type="text" id="cfg-moneda" maxlength="3"></div>
+      </div>
+      <div class="campo"><label>Público objetivo</label><input type="text" id="cfg-publico"></div>
+
+      <p class="nota-panel" style="margin-top:2px;">Textos comerciales</p>
+      <div class="campo"><label>Selo do hero (curto)</label><input type="text" id="cfg-hero-badge"></div>
+      <div class="campo"><label>Texto do selo do hero</label><input type="text" id="cfg-hero-badge-texto"></div>
+      <div class="campo"><label>Texto botao principal</label><input type="text" id="cfg-btn-principal"></div>
+      <div class="campo"><label>Texto botao secundario</label><input type="text" id="cfg-btn-secundario"></div>
+      <div class="campo"><label>Texto botao header</label><input type="text" id="cfg-btn-header"></div>
+      <div class="campo"><label>Texto CTA flutuante</label><input type="text" id="cfg-btn-flotante-texto"></div>
+
+      <p class="nota-panel" style="margin-top:2px;">Caracteristicas do produto (editavel)</p>
+      <div id="cfg-caracteristicas-lista" class="editor-lista"></div>
+      <div class="fila-2">
+        <button class="btn-panel" id="cfg-add-caracteristica" type="button">+ Adicionar caracteristica</button>
+        <button class="btn-panel" id="cfg-remover-caracteristica" type="button">- Remover ultima</button>
+      </div>
+      <button class="btn-panel" id="cfg-aplicar-pack-emojis" type="button">Aplicar pack padronizado de emojis</button>
+
+      <p class="nota-panel" style="margin-top:2px;">Configuracion comercial para conversiones</p>
+      <div class="campo"><label>Link de venta principal (checkout)</label><input type="url" id="cfg-link-principal" placeholder="https://"></div>
+      <div class="campo"><label>Link secundario (boton Ver como funciona)</label><input type="url" id="cfg-link-secundario" placeholder="https:// ou #funciona"></div>
+      <div class="fila-2">
+        <div class="campo"><label>Mostrar seccion de precios</label>
+          <select id="cfg-mostrar-secao-precos">
+            <option value="1">Si</option>
+            <option value="0">No</option>
+          </select>
+        </div>
+        <div class="campo"><label>Mostrar valores de precio</label>
+          <select id="cfg-mostrar-valores-precos">
+            <option value="1">Si</option>
+            <option value="0">No</option>
+          </select>
+        </div>
+      </div>
+      <div class="fila-2">
+        <div class="campo"><label>Precio Starter</label><input type="number" id="cfg-precio-starter" min="0" step="1"></div>
+        <div class="campo"><label>Precio Pro</label><input type="number" id="cfg-precio-pro" min="0" step="1"></div>
+      </div>
+      <div class="campo"><label>Precio Empresas</label><input type="number" id="cfg-precio-empresas" min="0" step="1"></div>
+      <div class="campo"><label>URL da imagem principal</label><input type="url" id="cfg-hero-imagem" placeholder="https://"></div>
+      <div class="campo"><label>Subir imagen del producto</label><input type="file" id="cfg-hero-upload" accept="image/*"></div>
+
+      <p class="nota-panel">Todos los cambios se realizan exclusivamente desde este panel de configuracion.</p>
+    </div>
+
+    <div class="panel-seccion" data-seccion="diseno">
+      <div class="fila-2">
+        <div class="campo"><label>Color primario</label><input type="color" id="cfg-primario"></div>
+        <div class="campo"><label>Color secundario</label><input type="color" id="cfg-secundario"></div>
+      </div>
+      <div class="campo"><label>Tema</label>
+        <select id="cfg-tema"><option value="oscuro">Oscuro</option><option value="claro">Claro</option></select>
+      </div>
+      <div class="campo"><label>Estilo tipográfico</label>
+        <select id="cfg-fuente">
+          <option value="Sora">Moderno — Sora</option>
+          <option value="'Playfair Display'">Elegante — Playfair Display</option>
+          <option value="Poppins">Amigable — Poppins</option>
+          <option value="'JetBrains Mono'">Técnico — JetBrains Mono</option>
+        </select>
+      </div>
+      <div class="campo"><label>Radio de bordes</label>
+        <select id="cfg-radio">
+          <option value="4px">Recto</option>
+          <option value="14px">Suave</option>
+          <option value="26px">Muy redondeado</option>
+        </select>
+      </div>
+      <div class="campo"><label>Espaciado entre secciones</label>
+        <select id="cfg-espaciado">
+          <option value="80px">Compacto</option>
+          <option value="120px">Estándar</option>
+          <option value="160px">Amplio (premium)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="panel-seccion" data-seccion="secciones">
+      <p class="nota-panel" style="margin-top:0;">Activa, desactiva y reordena los bloques de la página.</p>
+      <ul class="lista-secciones" id="listaSecciones"></ul>
+    </div>
+
+    <div class="panel-seccion" data-seccion="mensajes">
+      <p class="nota-panel" style="margin-top:0;">Mensajes de clientes sobre el producto.</p>
+      <div class="mensajes-acciones">
+        <button class="btn-panel" id="atualizar-mensajes" type="button">Actualizar lista</button>
+        <button class="btn-panel" id="limpar-mensajes" type="button">Limpiar mensajes</button>
+      </div>
+      <div id="lista-mensajes-produto" class="lista-mensajes-produto"></div>
+    </div>
+
+    <div class="panel-seccion" data-seccion="exportar">
+      <p class="nota-panel" style="margin-top:0;">Cuando termines de personalizar, descarga tu propia versión en HTML — un solo archivo, listo para subir a cualquier hosting.</p>
+      <button class="btn-panel primario" id="exportarHTML">⬇ Descargar página personalizada</button>
+      <p class="nota-panel">El archivo exportado incluye todos tus cambios de texto, colores y secciones. Ábrelo en cualquier navegador o súbelo a tu hosting.</p>
+    </div>
+
+  </div>
+</aside>
+
+<script src="js/main.js"></script>
+</body>
+</html>
+
+

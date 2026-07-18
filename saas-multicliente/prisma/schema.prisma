@@ -1,0 +1,113 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum TenantStatus {
+  active
+  suspended
+}
+
+enum MembershipRole {
+  owner
+  editor
+  viewer
+}
+
+enum PageStatus {
+  draft
+  published
+}
+
+enum MessageType {
+  pergunta
+  sugestao
+  reclamacao
+}
+
+model Tenant {
+  id          String       @id @default(uuid())
+  slug        String       @unique
+  name        String
+  status      TenantStatus @default(active)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  memberships Membership[]
+  landingPage LandingPage[]
+  messages    Message[]
+  assets      Asset[]
+}
+
+model User {
+  id          String       @id @default(uuid())
+  email       String       @unique
+  name        String?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  memberships Membership[]
+  pages       LandingPage[] @relation("LandingPageCreatedBy")
+}
+
+model Membership {
+  id        String         @id @default(uuid())
+  tenantId  String
+  userId    String
+  role      MembershipRole
+  createdAt DateTime       @default(now())
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, userId])
+  @@index([tenantId, role])
+}
+
+model LandingPage {
+  id         String     @id @default(uuid())
+  tenantId    String
+  title      String
+  status     PageStatus
+  version    Int
+  contentJson Json
+  createdById String?
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+
+  tenant     Tenant     @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  createdBy  User?      @relation("LandingPageCreatedBy", fields: [createdById], references: [id])
+
+  @@index([tenantId, status, updatedAt])
+}
+
+model Message {
+  id        String      @id @default(uuid())
+  tenantId  String
+  pageSlug  String
+  type      MessageType
+  email     String
+  message   String
+  sourceIp  String?
+  userAgent String?
+  createdAt DateTime    @default(now())
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, createdAt])
+}
+
+model Asset {
+  id        String   @id @default(uuid())
+  tenantId  String
+  kind      String
+  url       String
+  metadata  Json
+  createdAt DateTime @default(now())
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, kind])
+}
