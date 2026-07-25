@@ -1,1 +1,5 @@
-{`n  "version": 2,`n  "cleanUrls": true,`n  "trailingSlash": false`n}`n
+{
+  "version": 2,
+  "cleanUrls": true,
+  "trailingSlash": false
+}
