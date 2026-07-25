@@ -93,7 +93,7 @@
      (Hotmart, Kiwify, Paddle, Stripe, etc.). Mientras esté vacío,
      el botón desplaza suavemente hacia la sección de oferta. */
   function initCheckout() {
-    var CHECKOUT_URL = ""; // <-- pega aquí el enlace de pago
+    var CHECKOUT_URL = "https://pay.hotmart.com/S106886621B";
     var btn = document.getElementById("btn-comprar");
     if (!btn) return;
 
