@@ -1,9 +1,5 @@
 {
   "name": "landing-bonus-secure-delivery",
   "private": true,
-  "version": "1.0.0",
-  "dependencies": {
-    "@aws-sdk/client-s3": "^3.864.0",
-    "@aws-sdk/s3-request-presigner": "^3.864.0"
-  }
+  "version": "1.0.0"
 }

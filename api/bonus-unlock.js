@@ -1,5 +1,4 @@
-const { S3Client, GetObjectCommand } = require("@aws-sdk/client-s3");
-const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
+const crypto = require("crypto");
 
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
 const RATE_LIMIT_MAX_REQUESTS = 8;
@@ -73,29 +72,23 @@ async function sendLeadWebhook(email, ip) {
   }
 }
 
-function buildS3Client() {
-  const endpoint = process.env.BONUS_S3_ENDPOINT;
-  const region = process.env.BONUS_S3_REGION || "us-east-1";
-  const accessKeyId = process.env.BONUS_AWS_ACCESS_KEY_ID || process.env.AWS_ACCESS_KEY_ID;
-  const secretAccessKey = process.env.BONUS_AWS_SECRET_ACCESS_KEY || process.env.AWS_SECRET_ACCESS_KEY;
+function getSecret() {
+  return process.env.BONUS_TOKEN_SECRET || "change-me-in-vercel-env";
+}
 
-  if (!accessKeyId || !secretAccessKey) {
-    throw new Error("Missing object storage credentials");
-  }
+function signPayload(payload) {
+  return crypto
+    .createHmac("sha256", getSecret())
+    .update(payload)
+    .digest("hex");
+}
 
-  const forcePathStyle = process.env.BONUS_S3_FORCE_PATH_STYLE
-    ? process.env.BONUS_S3_FORCE_PATH_STYLE === "true"
-    : Boolean(endpoint);
-
-  return new S3Client({
-    region,
-    endpoint,
-    forcePathStyle,
-    credentials: {
-      accessKeyId,
-      secretAccessKey
-    }
-  });
+function createDownloadToken(email, ip) {
+  const exp = Math.floor(Date.now() / 1000) + signedUrlTtlSeconds;
+  const body = JSON.stringify({ email, exp, ip });
+  const payload = Buffer.from(body, "utf8").toString("base64url");
+  const signature = signPayload(payload);
+  return payload + "." + signature;
 }
 
 module.exports = async (req, res) => {
@@ -128,17 +121,9 @@ module.exports = async (req, res) => {
     return json(res, 400, { error: "Enter a valid email address" });
   }
 
-  const bucket = process.env.BONUS_S3_BUCKET;
-  const key = process.env.BONUS_S3_KEY;
-
-  if (!bucket || !key) {
-    return json(res, 500, { error: "Bonus delivery is not configured" });
-  }
-
   try {
-    const s3 = buildS3Client();
-    const command = new GetObjectCommand({ Bucket: bucket, Key: key });
-    const downloadUrl = await getSignedUrl(s3, command, { expiresIn: signedUrlTtlSeconds });
+    const token = createDownloadToken(email, ip);
+    const downloadUrl = "/api/bonus-file?token=" + encodeURIComponent(token);
 
     await sendLeadWebhook(email, ip);
 
