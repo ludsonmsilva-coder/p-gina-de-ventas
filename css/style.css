@@ -501,6 +501,9 @@ ul { list-style: none; }
 .footer-nav { display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; }
 .footer-nav a { color: #C9C0E6; font-size: 15px; }
 .footer-nav a:hover { color: #fff; }
+.footer-contact { font-size: 14px; color: #C9C0E6; }
+.footer-contact a { color: var(--gold-light); font-weight: 600; }
+.footer-contact a:hover { color: #fff; }
 .footer-legal { font-size: 13px; color: #7c748f; line-height: 1.7; }
 
 /* ----- Accesibilidad: foco visible ----- */
