@@ -114,7 +114,7 @@
     var form = document.getElementById("bonus-form");
     var emailInput = document.getElementById("bonus-email");
     var msg = document.getElementById("bonus-msg");
-    var BONUS_FILE_URL = "Arte_de_Hablar_con_IA.zip";
+    var BONUS_FILE_URL = "/Arte_de_Hablar_con_IA.zip";
 
     if (!form || !emailInput || !msg) return;
 
@@ -137,15 +137,10 @@
         // Si el almacenamiento está bloqueado, la descarga sigue igual.
       }
 
-      var link = document.createElement("a");
-      link.href = BONUS_FILE_URL;
-      link.setAttribute("download", "Arte_de_Hablar_con_IA.zip");
-      link.style.display = "none";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      // Navegación directa: funciona mejor en móviles y navegadores con bloqueos.
+      window.location.href = BONUS_FILE_URL;
 
-      msg.innerHTML = "Listo. Si la descarga no comenzó, <a href=\"" + BONUS_FILE_URL + "\" download>haz clic aquí</a>.";
+      msg.innerHTML = "Si la descarga no comenzó, <a href=\"" + BONUS_FILE_URL + "\" download>haz clic aquí</a>.";
       form.reset();
     });
   }
