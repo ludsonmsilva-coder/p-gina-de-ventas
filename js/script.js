@@ -15,6 +15,7 @@
     initScrollReveal();
     initYear();
     initCheckout();
+    initBonusDownload();
   });
 
   /* ---------- Acordeón del FAQ ---------- */
@@ -105,6 +106,47 @@
         var oferta = document.getElementById("comprar");
         if (oferta) oferta.scrollIntoView({ behavior: "smooth" });
       }
+    });
+  }
+
+  /* ---------- Bonus: email + descarga ---------- */
+  function initBonusDownload() {
+    var form = document.getElementById("bonus-form");
+    var emailInput = document.getElementById("bonus-email");
+    var msg = document.getElementById("bonus-msg");
+    var BONUS_FILE_URL = "Arte_de_Hablar_con_IA.zip";
+
+    if (!form || !emailInput || !msg) return;
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      if (!emailInput.checkValidity()) {
+        msg.textContent = "Ingresa un correo válido para descargar el bonus.";
+        msg.classList.add("is-error");
+        emailInput.focus();
+        return;
+      }
+
+      msg.textContent = "Preparando tu descarga...";
+      msg.classList.remove("is-error");
+
+      try {
+        localStorage.setItem("bonus_email", emailInput.value.trim());
+      } catch (err) {
+        // Si el almacenamiento está bloqueado, la descarga sigue igual.
+      }
+
+      var link = document.createElement("a");
+      link.href = BONUS_FILE_URL;
+      link.setAttribute("download", "Arte_de_Hablar_con_IA.zip");
+      link.style.display = "none";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      msg.innerHTML = "Listo. Si la descarga no comenzó, <a href=\"" + BONUS_FILE_URL + "\" download>haz clic aquí</a>.";
+      form.reset();
     });
   }
 })();

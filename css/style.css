@@ -383,6 +383,62 @@ ul { list-style: none; }
 .price-list .check { color: var(--violet); }
 .price-safe { color: var(--muted); font-size: 13px; margin-top: 14px; }
 
+/* ----- Bonus ----- */
+.bonus {
+  background: var(--paper);
+}
+.bonus-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: 36px;
+  box-shadow: var(--shadow-sm);
+}
+.bonus-card .lead {
+  max-width: 620px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.bonus-form {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  max-width: 640px;
+  margin: 22px auto 10px;
+}
+.bonus-form input {
+  width: 100%;
+  min-height: 54px;
+  border: 1px solid #d8d2ea;
+  border-radius: 999px;
+  padding: 0 20px;
+  font-size: 16px;
+  color: var(--text);
+  background: #fff;
+}
+.bonus-form input::placeholder {
+  color: #8f88a7;
+}
+.bonus-form input:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
+  border-color: transparent;
+}
+.bonus-msg {
+  text-align: center;
+  min-height: 24px;
+  color: var(--muted);
+  font-size: 14px;
+}
+.bonus-msg.is-error {
+  color: #b3204d;
+}
+.bonus-msg a {
+  color: var(--violet);
+  text-decoration: underline;
+  font-weight: 600;
+}
+
 /* ----- FAQ / Accordion ----- */
 .faq { background: var(--paper); }
 .accordion { margin-top: 40px; display: grid; gap: 12px; }

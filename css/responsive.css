@@ -64,6 +64,11 @@
   .price-now { font-size: 46px; }
   .btn-xl { padding: 17px 28px; font-size: 17px; width: 100%; }
 
+  /* Bonus */
+  .bonus-card { padding: 26px 18px; }
+  .bonus-form { grid-template-columns: 1fr; }
+  .bonus-form .btn { width: 100%; }
+
   /* FAQ */
   .acc-trigger { font-size: 16px; padding: 17px 18px; }
   .acc-panel p { padding: 0 18px 18px; }
