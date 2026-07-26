@@ -406,6 +406,13 @@ ul { list-style: none; }
   max-width: 640px;
   margin: 22px auto 10px;
 }
+.bonus-hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
 .bonus-form input {
   width: 100%;
   min-height: 54px;

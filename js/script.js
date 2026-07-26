@@ -113,12 +113,12 @@
   function initBonusDownload() {
     var form = document.getElementById("bonus-form");
     var emailInput = document.getElementById("bonus-email");
+    var honeypotInput = document.getElementById("bonus-company");
     var msg = document.getElementById("bonus-msg");
-    var BONUS_FILE_URL = "/Arte_de_Hablar_con_IA.zip";
 
     if (!form || !emailInput || !msg) return;
 
-    form.addEventListener("submit", function (e) {
+    form.addEventListener("submit", async function (e) {
       e.preventDefault();
 
       if (!emailInput.checkValidity()) {
@@ -137,11 +137,32 @@
         // Si el almacenamiento está bloqueado, la descarga sigue igual.
       }
 
-      // Navegación directa: funciona mejor en móviles y navegadores con bloqueos.
-      window.location.href = BONUS_FILE_URL;
+      try {
+        var response = await fetch("/api/bonus-unlock", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          body: JSON.stringify({
+            email: emailInput.value.trim(),
+            company: honeypotInput ? honeypotInput.value : ""
+          })
+        });
 
-      msg.innerHTML = "Si la descarga no comenzó, <a href=\"" + BONUS_FILE_URL + "\" download>haz clic aquí</a>.";
-      form.reset();
+        var payload = await response.json();
+
+        if (!response.ok || !payload.downloadUrl) {
+          throw new Error(payload.error || "No se pudo liberar la descarga.");
+        }
+
+        msg.innerHTML = "Descarga liberada. Si no abre automáticamente, <a href=\"" + payload.downloadUrl + "\" rel=\"noopener\">haz clic aquí</a>.";
+        form.reset();
+        window.location.assign(payload.downloadUrl);
+      } catch (err) {
+        msg.textContent = err.message || "Error al procesar tu solicitud. Intenta de nuevo en unos minutos.";
+        msg.classList.add("is-error");
+      }
     });
   }
 })();
