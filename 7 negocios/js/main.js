@@ -1,3 +1,19 @@
+// EDITA AQUÍ los valores (USD) de cada ítem del kit para mostrar el ancla de precio
+const PRECIOS = {
+  GUIA: 27,
+  PROMPTS: 17,
+  SERVICIOS: 19,
+  PROPUESTA: 15,
+  PLAN: 15,
+  MENSAJES: 12,
+};
+
+const totalPrecios = Object.values(PRECIOS).reduce((sum, value) => sum + value, 0);
+document.querySelectorAll("[data-price]").forEach((el) => {
+  const key = el.getAttribute("data-price");
+  el.textContent = key === "TOTAL" ? totalPrecios : PRECIOS[key];
+});
+
 const year = document.querySelector("#year");
 if (year) year.textContent = String(new Date().getFullYear());
 
